@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+# frozen_string_literal: true
+
+puts
+puts "Advent of Code 2022 — Ruby Edition"
+puts "-" * 35
+
+1.upto(24) do |day|
+  current_day = "Day#{day}"
+  break unless Dir.exist?(current_day)
+
+  Dir.chdir(current_day) do
+    require_relative current_day + "/" + current_day
+
+    print "Day #{day} — Result 1: "
+    puts Kernel.const_get(current_day).new.result1
+    print "Day #{day} — Result 2: "
+    puts Kernel.const_get(current_day).new.result2
+  end
+end
