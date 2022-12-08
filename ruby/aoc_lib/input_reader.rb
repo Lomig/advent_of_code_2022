@@ -1,39 +1,47 @@
 # frozen_string_literal: true
 
+require "matrix"
 
-class AnyInputReader
-  private attr_reader :input
+class RawInputReader
+  private attr_reader :file_name, :formatter
 
-  def initialize(input)
-    @input = sanitize_input(input)
+  def initialize(file_name:, formatter:)
+    @file_name = file_name
+    @formatter = formatter
   end
 
-  def read = File.readlines(input, chomp: true)
-
-  private
-
-  def sanitize_input(input) = input
+  def read = File.read(file_name).map(&formatter)
 end
 
-class DailyInputReader < AnyInputReader
-  private
+class ArrayReader < RawInputReader
+  def read = File.readlines(file_name, chomp: true).map(&formatter)
+end
 
-  def sanitize_input(input) = "day#{input}_input.txt"
+class MatrixReader < RawInputReader
+  def read
+    File.open(file_name)
+        .each_char
+        .with_object([[]], &populate_matrix)
+        .then { |matrix| Matrix[*matrix] }
+  end
+
+  def populate_matrix = lambda { |char, matrix|
+    next matrix << [] if char == "\n"
+
+    matrix.last << char.send(formatter)
+  }
 end
 
 class InputReader
-  INPUT_READERS = {
-    day_number: ::DailyInputReader,
-    full_name: ::AnyInputReader
-  }
+  INPUT_STRUCTURES = {
+    raw: ::RawInputReader,
+    array: ::ArrayReader,
+    matrix: ::MatrixReader
+  }.freeze
 
   private attr_reader :input
 
-  def initialize(args = {})
-    @input = INPUT_READERS[args.keys.first].new(args.values.first)
+  def self.new(file_name:, structure:, formatter:)
+    INPUT_STRUCTURES[structure].new(file_name:, formatter:)
   end
-
-  def read = input.read
-
-  def read_as_integers = input.read.map(&:to_i)
 end
