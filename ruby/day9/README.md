@@ -6,7 +6,7 @@ It seems to support the Elves just fine, though. The bridge spans a gorge which 
 
 You step carefully; as you do, the ropes stretch and twist. You decide to distract yourself by modeling rope physics; maybe you can even figure out where **not** to step.
 
-Consider a rope with a knot at each end; these knots mark the **head* and the *tail** of the rope. If the head moves far enough away from the tail, the tail is pulled toward the head.
+Consider a rope with a knot at each end; these knots mark the **head** and the **tail** of the rope. If the head moves far enough away from the tail, the tail is pulled toward the head.
 
 Due to nebulous reasoning involving [Planck lengths](https://en.wikipedia.org/wiki/Planck_units#Planck_length), you should be able to model the positions of the knots on a two-dimensional grid. Then, by following a hypothetical **series of motions** (your puzzle input) for the head, you can determine how the tail will move.
 
@@ -72,7 +72,7 @@ L 5
 R 2
 ```
 
-This series of motions moves the head **right* four steps, then *up* four steps, then *left* three steps, then *down** one step, and so on. After each step, you'll need to update the position of the tail if the step means the head is no longer adjacent to the tail. Visually, these motions occur as follows (`s` marks the starting position as a reference point):
+This series of motions moves the head **right** four steps, then **up** four steps, then **left** three steps, then **down** one step, and so on. After each step, you'll need to update the position of the tail if the step means the head is no longer adjacent to the tail. Visually, these motions occur as follows (`s` marks the starting position as a reference point):
 
 ```
 == Initial State ==
@@ -440,7 +440,7 @@ H123..  (2 covers 4)
 6.....  (6 covers 7, 8, 9, s)
 ```
 
-Now, you need to keep track of the positions the new tail, `9`, visits. In this example, the tail never moves, and so it only visits `**1*` position. However, *be careful**: more types of motion are possible than before, so you might want to visually compare your simulated rope to the one above.
+Now, you need to keep track of the positions the new tail, `9`, visits. In this example, the tail never moves, and so it only visits `**1**` position. However, **be careful**: more types of motion are possible than before, so you might want to visually compare your simulated rope to the one above.
 
 Here's a larger example:
 
