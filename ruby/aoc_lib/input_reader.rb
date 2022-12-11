@@ -10,7 +10,9 @@ class RawInputReader
     @formatter = formatter
   end
 
-  def read = File.read(file_name).map(&formatter)
+  def read = raw_input.map(&formatter)
+
+  def raw_input = File.read(file_name)
 end
 
 class ArrayReader < RawInputReader

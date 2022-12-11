@@ -2,6 +2,16 @@
 
 # frozen_string_literal: true
 
+SKIPPED = {
+  "11.2" => true
+}
+
+def result_or_skipped(day:, part:)
+  return "*** SKIPPED ***" if SKIPPED["#{day}.#{part}"]
+
+  Kernel.const_get("Day#{day}").new.send("result#{part}")
+end
+
 puts
 puts "Advent of Code 2022 — Ruby Edition"
 puts "-" * 35
@@ -15,8 +25,9 @@ puts "-" * 35
     require_relative padded_current_day + "/" + current_day
 
     print "Day #{day} — Result 1: "
-    puts Kernel.const_get(current_day).new.result1
+    puts result_or_skipped(day:, part: 1)
+
     print "Day #{day} — Result 2: "
-    puts Kernel.const_get(current_day).new.result2
+    puts result_or_skipped(day:, part: 2)
   end
 end
