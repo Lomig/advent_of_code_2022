@@ -20,6 +20,13 @@ class ArrayReader < RawInputReader
 end
 
 class MatrixReader < RawInputReader
+  private attr_reader :row, :column
+
+  def initialize(file_name:, formatter:)
+    @row = @column = 0
+    super
+  end
+
   def read
     File.open(file_name)
         .each_char
@@ -28,10 +35,33 @@ class MatrixReader < RawInputReader
   end
 
   def populate_matrix = lambda { |char, matrix|
-    next matrix << [] if char == "\n"
+    if char == "\n"
+      increase_row
+      reset_column
+      matrix << []
+      next
+    end
 
-    matrix.last << char.send(formatter)
+    if formatter.is_a?(Proc)
+      matrix.last << formatter.call(char, row, column)
+    else
+      matrix.last << char.send(formatter)
+    end
+
+    increase_column
   }
+
+  def increase_row
+    @row += 1
+  end
+
+  def increase_column
+    @column += 1
+  end
+
+  def reset_column
+    @column = 0
+  end
 end
 
 class InputReader
