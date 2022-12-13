@@ -10,7 +10,13 @@ class RawInputReader
     @formatter = formatter
   end
 
-  def read = raw_input.map(&formatter)
+  def read
+    if formatter.is_a?(Proc)
+      formatter.call(raw_input)
+    else
+      raw_input.send(formatter)
+    end
+  end
 
   def raw_input = File.read(file_name)
 end
